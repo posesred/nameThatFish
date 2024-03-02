@@ -22,17 +22,15 @@ export function FunctionalGameBoard({
         id="fish-guess-form"
         onSubmit={(e) => {
           e.preventDefault();
+          setFish(fish.slice(1));
+
           if (fishGuess === nextFishToName.name) {
-            const newFish = fish.filter(
-              (f) => f.toLowerCase() !== fishGuess.toLowerCase()
-            );
-            setFish(newFish);
             setCorrectCount(correctCount + 1);
           } else {
             setIncorrectCount(incorrectCount + 1);
           }
           setFishGuess("");
-          setImgNumber((prevNumber) => prevNumber + 1);
+          setImgNumber(imgNumber + 1);
         }}
       >
         <label htmlFor="fish-guess">What kind of fish is this?</label>

@@ -34,7 +34,7 @@ export function FunctionalApp() {
         incorrectCount={incorrectCount}
         answersLeft={fish}
       />
-      {totalGuess < startingFishAmount && (
+      {
         <FunctionalGameBoard
           initialFishes={initialFishes}
           fish={fish}
@@ -44,7 +44,7 @@ export function FunctionalApp() {
           incorrectCount={incorrectCount}
           setIncorrectCount={setIncorrectCount}
         />
-      )}
+      }
 
       {totalGuess >= startingFishAmount && (
         <FunctionalFinalScore
