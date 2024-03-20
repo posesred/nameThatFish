@@ -24,32 +24,30 @@ const initialFishes = [
 export function FunctionalApp() {
   const [correctCount, setCorrectCount] = useState(0);
   const [incorrectCount, setIncorrectCount] = useState(0);
-  const [fish, setFish] = useState(initialFishes.map((fish) => fish.name));
-  const startingFishAmount = initialFishes.length;
   const totalGuess = incorrectCount + correctCount;
+  const fish = initialFishes.map((fish) => fish.name).slice(totalGuess);
+  const gameOver = totalGuess == initialFishes.length;
   return (
     <>
-      <FunctionalScoreBoard
-        correctCount={correctCount}
-        incorrectCount={incorrectCount}
-        answersLeft={fish}
-      />
-      {
-        <FunctionalGameBoard
-          initialFishes={initialFishes}
-          fish={fish}
-          setFish={setFish}
-          correctCount={correctCount}
-          setCorrectCount={setCorrectCount}
-          incorrectCount={incorrectCount}
-          setIncorrectCount={setIncorrectCount}
-        />
-      }
+      {!gameOver && (
+        <>
+          <FunctionalScoreBoard
+            correctCount={correctCount}
+            incorrectCount={incorrectCount}
+            answersLeft={fish}
+          />
 
-      {totalGuess >= startingFishAmount && (
+          <FunctionalGameBoard
+            fishData={initialFishes[totalGuess]}
+            setCorrectCount={setCorrectCount}
+            setIncorrectCount={setIncorrectCount}
+          />
+        </>
+      )}
+      {gameOver && (
         <FunctionalFinalScore
           correctCount={correctCount}
-          totalCount={startingFishAmount}
+          totalCount={initialFishes.length}
         />
       )}
     </>
