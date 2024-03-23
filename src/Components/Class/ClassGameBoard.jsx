@@ -4,47 +4,30 @@ import "./styles/game-board.css";
 export class ClassGameBoard extends Component {
   state = {
     fishGuess: "",
-    imgNumber: 0,
   };
 
   render() {
-    const { imgNumber } = this.state;
-    const { initialFishes } = this.props;
-    const nextFishToName = initialFishes[imgNumber];
     const { fishGuess } = this.state;
-    const { incrementCorrectCount, incrementIncorrectCount, removeFish, fish } =
+    const { fishData, incrementCorrectCount, incrementIncorrectCount } =
       this.props;
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const { fishGuess } = this.state;
+      const { fishData } = this.props;
+
+      if (fishData.name === fishGuess) {
+        incrementCorrectCount();
+      } else {
+        incrementIncorrectCount();
+      }
+      this.setState({ fishGuess: "" });
+    };
     return (
       <div id="game-board">
         <div id="fish-container">
-          <img
-            src={nextFishToName ? nextFishToName.url : ""}
-            alt={nextFishToName ? nextFishToName.name : "No more fish"}
-          />
+          <img src={fishData.url} alt={fishData.name} />
         </div>
-        <form
-          id="fish-guess-form"
-          onSubmit={(event) => {
-            event.preventDefault();
-
-            removeFish(fish[1]);
-
-            if (fishGuess === nextFishToName.name) {
-              incrementCorrectCount();
-              this.setState({
-                fishGuess: "",
-              });
-            } else {
-              incrementIncorrectCount();
-              this.setState({
-                fishGuess: "",
-              });
-              this.setState((prevState) => ({
-                imgNumber: prevState.imgNumber + 1,
-              }));
-            }
-          }}
-        >
+        <form id="fish-guess-form" onSubmit={handleSubmit}>
           <label htmlFor="fish-guess">What kind of fish is this?</label>
           <input
             type="text"
@@ -52,7 +35,7 @@ export class ClassGameBoard extends Component {
             onChange={(event) => {
               this.setState({ fishGuess: event.target.value });
             }}
-            value={this.state.fishGuess}
+            value={fishGuess}
           />
           <input type="submit" />
         </form>

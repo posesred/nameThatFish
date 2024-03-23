@@ -22,55 +22,51 @@ const initialFishes = [
     url: Images.shark,
   },
 ];
+
 export class ClassApp extends Component {
   state = {
     incorrectCount: 0,
     correctCount: 0,
-    fish: initialFishes.map((fish) => fish.name),
-  };
-  incrementCorrectCount = () => {
-    this.setState((prevState) => ({
-      correctCount: prevState.correctCount + 1,
-    }));
   };
 
-  incrementIncorrectCount = () => {
-    this.setState((prevState) => ({
-      incorrectCount: prevState.incorrectCount + 1,
-    }));
-  };
-
-  removeFish = (fishName) => {
-    this.setState((prevState) => ({
-      fish: prevState.fish.filter(
-        (f) => f.toLowerCase() !== fishName.toLowerCase()
-      ),
-    }));
-  };
   render() {
+    const totalGuess = this.state.incorrectCount + this.state.correctCount;
+    const fish = initialFishes.map((fish) => fish.name).slice(totalGuess);
+    const gameOver = totalGuess == initialFishes.length;
+    const incrementCorrectCount = () => {
+      this.setState((prevState) => ({
+        correctCount: prevState.correctCount + 1,
+      }));
+    };
+
+    const incrementIncorrectCount = () => {
+      this.setState((prevState) => ({
+        incorrectCount: prevState.incorrectCount + 1,
+      }));
+    };
+
     return (
       <>
-        <>
-          <ClassScoreBoard
-            answersLeft={this.state.fish}
-            correctCount={this.state.correctCount}
-            incorrectCount={this.state.incorrectCount}
-          />
-          <ClassGameBoard
-            initialFishes={initialFishes}
-            fish={this.state.fish}
-            correctCount={this.state.correctCount}
-            incorrectCount={this.state.incorrectCount}
-            incrementCorrectCount={this.incrementCorrectCount}
-            incrementIncorrectCount={this.incrementIncorrectCount}
-            removeFish={this.removeFish}
-          />
-        </>
-        {this.state.correctCount + this.state.incorrectCount >=
-          initialFishes.length && (
+        {!gameOver && (
+          <>
+            <ClassScoreBoard
+              correctCount={this.state.correctCount}
+              incorrectCount={this.state.incorrectCount}
+              answersLeft={fish}
+            />
+            <ClassGameBoard
+              fishData={initialFishes[totalGuess]}
+              correctCount={this.state.correctCount}
+              incorrectCount={this.state.incorrectCount}
+              incrementCorrectCount={incrementCorrectCount}
+              incrementIncorrectCount={incrementIncorrectCount}
+            />
+          </>
+        )}
+        {gameOver && (
           <ClassFinalScore
             correctCount={this.state.correctCount}
-            incorrectCount={this.state.incorrectCount}
+            totalCount={initialFishes.length}
           />
         )}
       </>

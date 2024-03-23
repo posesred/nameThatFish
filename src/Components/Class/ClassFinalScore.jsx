@@ -8,7 +8,7 @@ export class ClassFinalScore extends Component {
         <div id="score">
           <p>{this.props.correctCount}</p>
           <hr />
-          <p>{this.props.correctCount + this.props.incorrectCount}</p>
+          <p>{this.props.totalCount}</p>
         </div>
       </div>
     );
