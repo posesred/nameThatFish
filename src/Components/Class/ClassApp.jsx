@@ -44,7 +44,7 @@ export class ClassApp extends Component {
         incorrectCount: prevState.incorrectCount + 1,
       }));
     };
-
+    //I had a lot of trouble trying to change ths state from the child comp so ended up just passing a function from parent to child that can change it please show me or give me a hint on how to fix this.
     return (
       <>
         {!gameOver && (
