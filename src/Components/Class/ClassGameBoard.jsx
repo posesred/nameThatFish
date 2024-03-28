@@ -7,19 +7,12 @@ export class ClassGameBoard extends Component {
   };
 
   render() {
+    const { fishData, handleAnswer } = this.props;
     const { fishGuess } = this.state;
-    const { fishData, incrementCorrectCount, incrementIncorrectCount } =
-      this.props;
+
     const handleSubmit = (e) => {
       e.preventDefault();
-      const { fishGuess } = this.state;
-      const { fishData } = this.props;
-
-      if (fishData.name === fishGuess) {
-        incrementCorrectCount();
-      } else {
-        incrementIncorrectCount();
-      }
+      handleAnswer(fishGuess);
       this.setState({ fishGuess: "" });
     };
     return (

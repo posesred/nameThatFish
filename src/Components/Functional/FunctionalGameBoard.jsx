@@ -8,7 +8,7 @@ export function FunctionalGameBoard({
 }) {
   const [fishGuess, setFishGuess] = useState("");
 
-  const guessTheFish = (answer) => {
+  const handleAnswer = (answer) => {
     if (fishData.name === answer) {
       setCorrectCount((curState) => curState + 1);
     } else {
@@ -18,7 +18,7 @@ export function FunctionalGameBoard({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    guessTheFish(fishGuess);
+    handleAnswer(fishGuess);
     setFishGuess("");
   };
 

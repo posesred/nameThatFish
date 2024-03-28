@@ -2,26 +2,7 @@ import { Component } from "react";
 import { ClassScoreBoard } from "./ClassScoreBoard";
 import { ClassGameBoard } from "./ClassGameBoard";
 import { ClassFinalScore } from "./ClassFinalScore";
-import { Images } from "../../assets/Images";
-
-const initialFishes = [
-  {
-    name: "trout",
-    url: Images.trout,
-  },
-  {
-    name: "salmon",
-    url: Images.salmon,
-  },
-  {
-    name: "tuna",
-    url: Images.tuna,
-  },
-  {
-    name: "shark",
-    url: Images.shark,
-  },
-];
+import { initialFishes } from "../../constants/fishData";
 
 export class ClassApp extends Component {
   state = {
@@ -29,22 +10,20 @@ export class ClassApp extends Component {
     correctCount: 0,
   };
 
+  handleAnswer = (answer) => {
+    const currentIndex = this.state.correctCount + this.state.incorrectCount;
+    this.setState((cur) => {
+      return answer === initialFishes[currentIndex].name
+        ? { correctCount: cur.correctCount + 1 }
+        : { incorrectCount: cur.incorrectCount + 1 };
+    });
+  };
+
   render() {
     const totalGuess = this.state.incorrectCount + this.state.correctCount;
     const fish = initialFishes.map((fish) => fish.name).slice(totalGuess);
     const gameOver = totalGuess == initialFishes.length;
-    const incrementCorrectCount = () => {
-      this.setState((prevState) => ({
-        correctCount: prevState.correctCount + 1,
-      }));
-    };
 
-    const incrementIncorrectCount = () => {
-      this.setState((prevState) => ({
-        incorrectCount: prevState.incorrectCount + 1,
-      }));
-    };
-    //I had a lot of trouble trying to change ths state from the child comp so ended up just passing a function from parent to child that can change it please show me or give me a hint on how to fix this.
     return (
       <>
         {!gameOver && (
@@ -56,10 +35,7 @@ export class ClassApp extends Component {
             />
             <ClassGameBoard
               fishData={initialFishes[totalGuess]}
-              correctCount={this.state.correctCount}
-              incorrectCount={this.state.incorrectCount}
-              incrementCorrectCount={incrementCorrectCount}
-              incrementIncorrectCount={incrementIncorrectCount}
+              handleAnswer={this.handleAnswer}
             />
           </>
         )}
